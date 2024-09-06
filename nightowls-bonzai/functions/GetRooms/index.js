@@ -1,0 +1,1 @@
+// Hämta alla rum för en överblick vilka som är lediga eller bokade.
