@@ -28,12 +28,12 @@ functions:
           path: /api/rooms
           method: post
 
-  PostRoom:
-    handler: functions/PostRoom/index.handler
+  PutRoom:
+    handler: functions/PutRoom/index.handler
     events:
       - httpApi:
           path: /api/room
-          method: post
+          method: put
     environment:
       BOOKINGS_TABLE: 'bonzai-db-bookings'
 

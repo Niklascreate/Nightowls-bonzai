@@ -1,4 +1,4 @@
-Post Rooms:
+POST Rooms:
 
 [
     { "roomType": "singleroom", "price": 500 },
@@ -24,6 +24,4 @@ Post Rooms:
     { "roomType": "suiteroom", "price": 1500 },
     { "roomType": "suiteroom", "price": 1500 }
 ]
-
-
 

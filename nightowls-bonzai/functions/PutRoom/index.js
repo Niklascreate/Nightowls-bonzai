@@ -7,31 +7,38 @@ const db = new DynamoDB.DocumentClient();
 exports.handler = async (event) => {
     const { numberOfGuests, roomType, checkInDate, checkOutDate, guestName } = JSON.parse(event.body);
 
-    
+    // Kontrollera att alla fält är ifyllda
     if (!numberOfGuests || !roomType || !checkInDate || !checkOutDate || !guestName) {
         return sendError(400, { message: 'Alla fält måste vara ifyllda' });
     }
 
-    
+    // Kontrollera regler för 2 gäster
     if (numberOfGuests === 2 && roomType === 'singleroom') {
-        return sendError(400, { message: 'Boka dubbelrum tack.' });
+        return sendError(400, { message: 'För 2 gäster boka dubbelrum tack eller 2 enkelrum.' });
     }
 
+    // Kontrollera regler för 3 gäster
     if (numberOfGuests === 3) {
-        if (roomType === 'singleroom') {
-            return sendError(400, { message: 'För 3 gäster, boka 1 dubbelrum och 1 enkelrum tack.' });
-        } else if (roomType === 'doubleroom') {
-            return sendError(400, { message: 'För 3 gäster, boka 1 dubbelrum och 1 enkelrum tack.' });
+        if (roomType === 'singleroom' || roomType === 'doubleroom') {
+            return sendError(400, { message: 'För 3 gäster, boka 1 dubbelrum och 1 enkelrum eller boka en svit.' });
+        } 
+        if (roomType !== 'suite' && roomType !== 'combination') {
+            return sendError(400, { message: 'För 3 gäster måste du välja antingen en suite eller en kombination av 1 dubbelrum och 1 enkelrum.' });
         }
     }
 
-    
-    if (numberOfGuests === 3 && roomType !== 'suite' && roomType !== 'combination') {
-        return sendError(400, { message: 'För 3 gäster måste du välja antingen en suite eller en kombination av 1 dubbelrum och 1 enkelrum.' });
+    // Beräkna pris
+    let pricePerRoom;
+    if (roomType === 'singleroom') {
+        pricePerRoom = 500;
+    } else if (roomType === 'doubleroom') {
+        pricePerRoom = 1000;
+    } else if (roomType === 'suite') {
+        pricePerRoom = 1500;
+    } else {
+        return sendError(400, { message: 'Ogiltig rumtyp.' });
     }
-
-    const id = uuid().substring(0, 5);
-    const pricePerRoom = roomType === 'singleroom' ? 500 : (roomType === 'doubleroom' ? 1000 : (roomType === 'suite' ? 1500 : 0));
+    
     const totalPrice = pricePerRoom * numberOfGuests;
 
     try {
@@ -39,7 +46,8 @@ exports.handler = async (event) => {
             TableName: process.env.BOOKINGS_TABLE,
             Item: {
                 available: true,
-                id: id,
+                id: uuid().substring(0, 5),
+                roomId: roomId,
                 roomType: roomType,
                 price: pricePerRoom,
                 numberOfGuests: numberOfGuests,
@@ -57,7 +65,8 @@ exports.handler = async (event) => {
             totalPrice: totalPrice,
             checkInDate: checkInDate,
             checkOutDate: checkOutDate,
-            guestName: guestName
+            guestName: guestName,
+            roomId: roomId
         };
 
         return sendResponse(200, bookingConfirmation);
