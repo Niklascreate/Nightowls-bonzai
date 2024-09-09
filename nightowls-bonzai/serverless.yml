@@ -10,6 +10,8 @@ provider:
   runtime: nodejs20.x
   region: eu-north-1
   deploymentMethod: direct
+  iam:
+    role: arn:aws:iam::376129862797:role/LambdaDynamoDBuserRole
 
 functions:
   GetRooms:
@@ -18,6 +20,12 @@ functions:
       - httpApi:
           path: /api/rooms
           method: get
+  PostRooms:
+      handler: functions/PostRooms/index.handler
+      events:
+        - httpApi:
+            path: /api/rooms
+            method: post
 
 
 

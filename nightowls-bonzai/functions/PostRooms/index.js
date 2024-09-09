@@ -1,12 +1,27 @@
-// //Lägg till alla 20 rum här
+const { db } = require('../../services/index');
+const { sendResponse, sendError } = require('../../responses/index');
+const { v4: uuid } = require('uuid');
 
-// Det finns totalt 20 rum på hotellet som kan bokas.
-// Det finns tre typer av rum:
-// Enkelrum som tillåter enbart en 1 gäst
-// Dubbelrum som tillåter 2 gäster
-// Svit som tillåter 3 gäster
-// Enkelrum kostar 500 kr / natt
-// Dubbelrum kostar 1000 kr / natt
-// Svit kostar 1500 kr / natt
-// Det går att ha olika typer av rum i en bokning men antalet gäster måste stämma överens med ovan logik. 
-// Exempel: 3 personer behöver antingen boka en svit eller ett enkelrum och ett dubbelrum.
+exports.handler = async (event) => {
+    const rooms = JSON.parse(event.body);
+    
+    try {
+        for (const room of rooms) {
+            const id = uuid().substring(0, 5);
+            
+            await db.put({
+                TableName: 'bonzai-db',
+                Item: {
+                    available: true,
+                    id: id,
+                    roomType: room.roomType,
+                    price: room.price
+                }
+            });
+        }
+
+        return sendResponse(200, { success: true });
+    } catch (error) {
+        return sendError(500, { message: error.message });
+    }
+};
