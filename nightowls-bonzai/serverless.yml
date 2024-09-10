@@ -32,7 +32,7 @@ functions:
     handler: functions/PutRoom/index.handler
     events:
       - httpApi:
-          path: /api/room
+          path: /api/room/{id}
           method: put
     environment:
       BOOKINGS_TABLE: 'bonzai-db-bookings'

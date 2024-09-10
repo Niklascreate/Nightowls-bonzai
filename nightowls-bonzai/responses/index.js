@@ -4,7 +4,7 @@ function sendResponse(status, data) {
         headers : {
             'Content-Type' : 'application/json'
         },
-        body: JSON.stringify({data})
+        ...data
     };
 }
 
@@ -14,7 +14,7 @@ function sendError(status, data) {
         headers : {
             'Content-Type' : 'application/json'
         },
-        body: JSON.stringify({success : false, data})
+        ...data
     };
 }
 
