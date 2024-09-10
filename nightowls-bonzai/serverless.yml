@@ -53,6 +53,15 @@ functions:
           path: /api/bookings
           method: get
     environment:
+      BOOKINGS_TABLE: 'bonzai-db-bookings'
+
+  UpdateRoom:   
+    handler: functions/UpdateRoom/index.handler  
+    events:
+      - httpApi:
+          path: /api/updateRoom/{id}   
+          method: put
+    environment:
       BOOKINGS_TABLE: 'bonzai-db-bookings' 
 
 resources:
