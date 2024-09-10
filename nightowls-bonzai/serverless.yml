@@ -37,6 +37,15 @@ functions:
     environment:
       BOOKINGS_TABLE: 'bonzai-db-bookings'
 
+  GetBooking:   
+    handler: functions/GetBookings/index.handler  
+    events:
+      - httpApi:
+          path: /api/bookings/{id}   
+          method: get
+    environment:
+      BOOKINGS_TABLE: 'bonzai-db-bookings' 
+
 resources:
   Resources:
     BonzaiTable:
