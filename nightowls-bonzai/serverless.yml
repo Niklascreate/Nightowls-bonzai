@@ -50,7 +50,7 @@ functions:
     handler: functions/GetBookings/index.handler  
     events:
       - httpApi:
-          path: /api/bookings/{id}   
+          path: /api/bookings
           method: get
     environment:
       BOOKINGS_TABLE: 'bonzai-db-bookings' 
