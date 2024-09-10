@@ -1,11 +1,6 @@
-const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb');
+const { db } = require('../../services/index');
 const { sendResponse, sendError } = require('../../responses/index');
 const { v4: uuid } = require('uuid');
-
-// Skapa en instans av DynamoDBClient
-const dynamoClient = new DynamoDBClient();
-const db = DynamoDBDocument.from(dynamoClient);  // Korrekt användning av DynamoDBDocument från lib-dynamodb
 
 exports.handler = async (event) => {
     try {
@@ -41,7 +36,7 @@ exports.handler = async (event) => {
             return sendError(400, { message: 'Ogiltig rumtyp.' });
         }
 
-        const totalPrice = pricePerRoom * numberOfGuests;
+        const totalPrice = pricePerRoom;
         const bookingId = uuid().substring(0, 5);
 
         await db.put({

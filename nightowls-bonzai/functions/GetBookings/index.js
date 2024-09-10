@@ -1,10 +1,5 @@
-const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb');
 const { sendResponse, sendError } = require('../../responses/index');
-
-// Skapa en instans av DynamoDBClient
-const dynamoClient = new DynamoDBClient();
-const db = DynamoDBDocument.from(dynamoClient);  
+const { db } = require('../../services/index');
 
 exports.handler = async (event) => {
     try {
