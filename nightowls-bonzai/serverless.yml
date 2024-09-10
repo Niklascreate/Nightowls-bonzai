@@ -36,6 +36,15 @@ functions:
           method: put
     environment:
       BOOKINGS_TABLE: 'bonzai-db-bookings'
+      
+  DeleteRoom:
+    handler: functions/DeleteRoom/index.handler
+    events:
+      - httpApi:
+          path: /api/room/{id}
+          method: delete
+    environment:
+      BOOKINGS_TABLE: 'bonzai-db-bookings'
 
 resources:
   Resources:
