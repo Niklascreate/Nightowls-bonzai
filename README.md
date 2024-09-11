@@ -43,16 +43,19 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/rooms
 
 ### POST
 Boka ett rum.
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room/{id}  // Ta id:et från Get anropet när du hämtar alla rum från databasen.
+https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room  // Ta RoomId från Get anropet när du hämtar alla rum från databasen och lägg det i bodyn.
 ```
-{
-  "numberOfGuests": 1,
-  "roomType": "singleroom", // Rumstyper = singleroom, doubleroom, suite 
-  "checkInDate": "2024-12-24",
-  "checkOutDate": "2024-12-25",
-  "guestName": "Gris Nils",
-  "email": "GrisNils@ladan.se"
-}
+[
+		{
+		"numberOfGuests": 1,
+		"roomType": "singleroom",
+		"checkInDate": "2024-09-10",
+		"checkOutDate": "2024-09-11",
+		"guestName": "Gris Nils",
+		"email": "GrisNils@ladan.se",
+		"roomId": "819b5"
+		}
+]
 ```
 
 ### GET Bookings
@@ -73,6 +76,7 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/updateRoom/{id}
   "guestName": "Niklas Nilsson",
   "email": "NiklasNilsson@gmail.com"
 }
+
 ```
 
 
