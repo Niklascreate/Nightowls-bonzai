@@ -5,7 +5,7 @@ Utveckling och Driftsättning i Molnmiljö
 ## Endpoints:
 
 
-1 ### POST
+### POST
 Posta alla rum till databasen.
 https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/rooms
 
@@ -37,7 +37,7 @@ Skicka med detta i bodyn/json.
 ]
 ```
 
-2 ### GET
+### GET
 Hämta alla rum från DynamoDB för en överblick med viktig information som till exempel roomID.
 https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/rooms
 
