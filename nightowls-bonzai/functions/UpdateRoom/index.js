@@ -3,7 +3,7 @@ const { sendResponse, sendError } = require('../../responses/index');
 
 exports.handler = async (event) => {
     try {
-        const { numberOfGuests, roomType, checkInDate, checkOutDate, guestName } = JSON.parse(event.body);
+        const { numberOfGuests, roomType, checkInDate, checkOutDate, guestName, email } = JSON.parse(event.body);
 
         if (!numberOfGuests || !roomType || !checkInDate || !checkOutDate || !guestName) {
             return sendError(400, { message: 'Alla fält måste vara ifyllda' });
@@ -40,7 +40,7 @@ exports.handler = async (event) => {
         await db.update({
             TableName: process.env.BOOKINGS_TABLE,
             Key: { id: bookingId },
-            UpdateExpression: 'set roomType = :roomType, price = :price, numberOfGuests = :numberOfGuests, checkInDate = :checkInDate, checkOutDate = :checkOutDate, guestName = :guestName, totalPrice = :totalPrice',
+            UpdateExpression: 'set roomType = :roomType, price = :price, numberOfGuests = :numberOfGuests, checkInDate = :checkInDate, checkOutDate = :checkOutDate, guestName = :guestName, totalPrice = :totalPrice, email = :email',
             ExpressionAttributeValues: {
                 ':roomType': roomType,
                 ':price': pricePerRoom,
@@ -48,7 +48,8 @@ exports.handler = async (event) => {
                 ':checkInDate': checkInDate,
                 ':checkOutDate': checkOutDate,
                 ':guestName': guestName,
-                ':totalPrice': totalPrice
+                ':totalPrice': totalPrice,
+                ':email': email
             }
         });
 
@@ -59,7 +60,8 @@ exports.handler = async (event) => {
             totalPrice: totalPrice,
             checkInDate: checkInDate,
             checkOutDate: checkOutDate,
-            guestName: guestName
+            guestName: guestName,
+            email: email
         };
 
         return sendResponse(200, updateConfirmation);

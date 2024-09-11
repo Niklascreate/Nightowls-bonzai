@@ -3,7 +3,7 @@ const { db } = require('../../services/index');
 
 exports.handler = async (event) => {
     try {
-        // Hämta alla bokningar från DynamoDB
+        // Hämta alla bokningar
         const result = await db.scan({
             TableName: process.env.BOOKINGS_TABLE
         });
@@ -14,8 +14,7 @@ exports.handler = async (event) => {
         if (!bookings || bookings.length === 0) {
             return sendError(404, { message: 'Inga bokningar hittades.' });
         }
-
-        
+ 
         const bookingsOverview = bookings.map(booking => ({
             bookingNumber: booking.id,
             checkInDate: booking.checkInDate,
