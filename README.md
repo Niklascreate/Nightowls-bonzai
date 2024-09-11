@@ -47,11 +47,11 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room/{id}  // Ta id:
 ```
 {
   "numberOfGuests": 1,
-  "roomType": "singleroom", // Rumrstyper = singleroom, doubleroom, suite 
+  "roomType": "singleroom", // Rumstyper = singleroom, doubleroom, suite 
   "checkInDate": "2024-12-24",
   "checkOutDate": "2024-12-25",
   "guestName": "Gris Nils",
-	"email": "GrisNils@ladan.se"
+  "email": "GrisNils@ladan.se"
 }
 ```
 
@@ -59,8 +59,9 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room/{id}  // Ta id:
 Hämta alla bokningar som är gjorda från bookings-databasen(DynamoDB)
 https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/bookings
 
+
 ### PUT
-För att ändra en bokning.
+För att ändra en bokning. Kör ett Get anrop mot bookings för att få fram ditt bookingNumber och använd det för att ändra bokning.
 https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/updateRoom/{id}
 
 ```
@@ -70,7 +71,7 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/updateRoom/{id}
   "checkInDate": "2024-09-10",
   "checkOutDate": "2024-09-11",
   "guestName": "Niklas Nilsson",
-	"email": "NiklasNilsson@gmail.com"
+  "email": "NiklasNilsson@gmail.com"
 }
 ```
 
