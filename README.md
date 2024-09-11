@@ -43,7 +43,7 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/rooms
 
 ### POST
 Boka ett rum.
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room  // Ta RoomId från Get anropet när du hämtar alla rum från databasen och lägg det i bodyn.
+https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room  // Ta Id:et från Get anropet när du hämtar alla rum från databasen och lägg det i bodyn ynder "roomId": "här" .
 ```
 [
 		{
