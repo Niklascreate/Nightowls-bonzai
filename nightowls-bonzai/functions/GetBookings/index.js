@@ -21,7 +21,8 @@ exports.handler = async (event) => {
             checkOutDate: booking.checkOutDate,
             numberOfGuests: booking.numberOfGuests,
             roomType: booking.roomType,
-            guestName: booking.guestName
+            guestName: booking.guestName,
+            email: booking.email
         }));
 
        
