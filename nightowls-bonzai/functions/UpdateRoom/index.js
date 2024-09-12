@@ -35,7 +35,7 @@ exports.handler = async (event) => {
             return sendError(400, { message: 'Ogiltig rumtyp.' });
         }
 
-        const totalPrice = pricePerRoom * numberOfGuests;
+        const totalPrice = pricePerRoom;
 
         await db.update({
             TableName: process.env.BOOKINGS_TABLE,
