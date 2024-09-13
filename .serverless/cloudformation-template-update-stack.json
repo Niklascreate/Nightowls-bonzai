@@ -1,0 +1,917 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "ServerlessDeploymentBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ServerlessDeploymentBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "ServerlessDeploymentBucket"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "ServerlessDeploymentBucket"
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "ServerlessDeploymentBucket"
+                      }
+                    ]
+                  ]
+                }
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "GetRoomsLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/nightowls-bonzai-dev-GetRooms"
+      }
+    },
+    "PostRoomsLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/nightowls-bonzai-dev-PostRooms"
+      }
+    },
+    "PutRoomLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/nightowls-bonzai-dev-PutRoom"
+      }
+    },
+    "DeleteRoomLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/nightowls-bonzai-dev-DeleteRoom"
+      }
+    },
+    "GetBookingLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/nightowls-bonzai-dev-GetBooking"
+      }
+    },
+    "UpdateRoomLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/nightowls-bonzai-dev-UpdateRoom"
+      }
+    },
+    "GetRoomsLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/nightowls-bonzai/dev/1725970860017-2024-09-10T12:21:00.017Z/nightowls-bonzai.zip"
+        },
+        "Handler": "functions/GetRooms/index.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "nightowls-bonzai-dev-GetRooms",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Role": "arn:aws:iam::711387100461:role/LambdaDynamoDBFull"
+      },
+      "DependsOn": [
+        "GetRoomsLogGroup"
+      ]
+    },
+    "PostRoomsLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/nightowls-bonzai/dev/1725970860017-2024-09-10T12:21:00.017Z/nightowls-bonzai.zip"
+        },
+        "Handler": "functions/PostRooms/index.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "nightowls-bonzai-dev-PostRooms",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Role": "arn:aws:iam::711387100461:role/LambdaDynamoDBFull"
+      },
+      "DependsOn": [
+        "PostRoomsLogGroup"
+      ]
+    },
+    "PutRoomLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/nightowls-bonzai/dev/1725970860017-2024-09-10T12:21:00.017Z/nightowls-bonzai.zip"
+        },
+        "Handler": "functions/PutRoom/index.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "nightowls-bonzai-dev-PutRoom",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "BOOKINGS_TABLE": "bonzai-db-bookings"
+          }
+        },
+        "Role": "arn:aws:iam::711387100461:role/LambdaDynamoDBFull"
+      },
+      "DependsOn": [
+        "PutRoomLogGroup"
+      ]
+    },
+    "DeleteRoomLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/nightowls-bonzai/dev/1725970860017-2024-09-10T12:21:00.017Z/nightowls-bonzai.zip"
+        },
+        "Handler": "functions/DeleteRoom/index.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "nightowls-bonzai-dev-DeleteRoom",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "BOOKINGS_TABLE": "bonzai-db-bookings"
+          }
+        },
+        "Role": "arn:aws:iam::711387100461:role/LambdaDynamoDBFull"
+      },
+      "DependsOn": [
+        "DeleteRoomLogGroup"
+      ]
+    },
+    "GetBookingLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/nightowls-bonzai/dev/1725970860017-2024-09-10T12:21:00.017Z/nightowls-bonzai.zip"
+        },
+        "Handler": "functions/GetBookings/index.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "nightowls-bonzai-dev-GetBooking",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "BOOKINGS_TABLE": "bonzai-db-bookings"
+          }
+        },
+        "Role": "arn:aws:iam::711387100461:role/LambdaDynamoDBFull"
+      },
+      "DependsOn": [
+        "GetBookingLogGroup"
+      ]
+    },
+    "UpdateRoomLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/nightowls-bonzai/dev/1725970860017-2024-09-10T12:21:00.017Z/nightowls-bonzai.zip"
+        },
+        "Handler": "functions/UpdateRoom/index.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "nightowls-bonzai-dev-UpdateRoom",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "BOOKINGS_TABLE": "bonzai-db-bookings"
+          }
+        },
+        "Role": "arn:aws:iam::711387100461:role/LambdaDynamoDBFull"
+      },
+      "DependsOn": [
+        "UpdateRoomLogGroup"
+      ]
+    },
+    "GetRoomsLambdaVersionJaMETypVJpr3HADW78MjtqyWKBYFtSj1BjTex02pvOI": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "GetRoomsLambdaFunction"
+        },
+        "CodeSha256": "ARTjAgv9IQMCyOuWeNQ70PlUFrU5DlIy+jbpw1WCkcI="
+      }
+    },
+    "PostRoomsLambdaVersion1YAOWIQbJINmjjlbsmvdgm4jGjSaK9KuM3mNcGhY": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "PostRoomsLambdaFunction"
+        },
+        "CodeSha256": "ARTjAgv9IQMCyOuWeNQ70PlUFrU5DlIy+jbpw1WCkcI="
+      }
+    },
+    "PutRoomLambdaVersionxIzHBwGnucp0gigYS3r9ZASmZD4sEZSH41Np060Y": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "PutRoomLambdaFunction"
+        },
+        "CodeSha256": "ARTjAgv9IQMCyOuWeNQ70PlUFrU5DlIy+jbpw1WCkcI="
+      }
+    },
+    "DeleteRoomLambdaVersionEBvVZMFRadRRRX09kj9VuJtelMCSgi80CJMCEe9w8": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "DeleteRoomLambdaFunction"
+        },
+        "CodeSha256": "ARTjAgv9IQMCyOuWeNQ70PlUFrU5DlIy+jbpw1WCkcI="
+      }
+    },
+    "GetBookingLambdaVersionRdEJ4WH4R6wAWSUm1HttBgnQMGmo7YSS3wnpx5KRc": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "GetBookingLambdaFunction"
+        },
+        "CodeSha256": "ARTjAgv9IQMCyOuWeNQ70PlUFrU5DlIy+jbpw1WCkcI="
+      }
+    },
+    "UpdateRoomLambdaVersionCMLrOUYnBf3gRjV1FrUCIcSyRiC4uVemRz3kAm3B0rc": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "UpdateRoomLambdaFunction"
+        },
+        "CodeSha256": "ARTjAgv9IQMCyOuWeNQ70PlUFrU5DlIy+jbpw1WCkcI="
+      }
+    },
+    "HttpApi": {
+      "Type": "AWS::ApiGatewayV2::Api",
+      "Properties": {
+        "Name": "dev-nightowls-bonzai",
+        "ProtocolType": "HTTP"
+      }
+    },
+    "HttpApiStage": {
+      "Type": "AWS::ApiGatewayV2::Stage",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "StageName": "$default",
+        "AutoDeploy": true,
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        }
+      }
+    },
+    "GetRoomsLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "GetRoomsLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationGetRooms": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "GetRoomsLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "HttpApiRouteGetApiRooms": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "GET /api/rooms",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationGetRooms"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationGetRooms"
+    },
+    "PostRoomsLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "PostRoomsLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationPostRooms": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "PostRoomsLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "HttpApiRoutePostApiRooms": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "POST /api/rooms",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationPostRooms"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationPostRooms"
+    },
+    "PutRoomLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "PutRoomLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationPutRoom": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "PutRoomLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "HttpApiRoutePutApiRoomIdVar": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "PUT /api/room/{id}",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationPutRoom"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationPutRoom"
+    },
+    "DeleteRoomLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DeleteRoomLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationDeleteRoom": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "DeleteRoomLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "HttpApiRouteDeleteApiRoomIdVar": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "DELETE /api/room/{id}",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationDeleteRoom"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationDeleteRoom"
+    },
+    "GetBookingLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "GetBookingLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationGetBooking": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "GetBookingLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "HttpApiRouteGetApiBookingsIdVar": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "GET /api/bookings/{id}",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationGetBooking"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationGetBooking"
+    },
+    "UpdateRoomLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UpdateRoomLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationUpdateRoom": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "UpdateRoomLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "HttpApiRoutePutApiUpdateroomIdVar": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "PUT /api/updateRoom/{id}",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationUpdateRoom"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationUpdateRoom"
+    },
+    "BonzaiTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "bonzai-db",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
+    },
+    "BonzaibookingTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "bonzai-db-bookings",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": {
+        "Ref": "ServerlessDeploymentBucket"
+      },
+      "Export": {
+        "Name": "sls-nightowls-bonzai-dev-ServerlessDeploymentBucketName"
+      }
+    },
+    "GetRoomsLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "GetRoomsLambdaVersionJaMETypVJpr3HADW78MjtqyWKBYFtSj1BjTex02pvOI"
+      },
+      "Export": {
+        "Name": "sls-nightowls-bonzai-dev-GetRoomsLambdaFunctionQualifiedArn"
+      }
+    },
+    "PostRoomsLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "PostRoomsLambdaVersion1YAOWIQbJINmjjlbsmvdgm4jGjSaK9KuM3mNcGhY"
+      },
+      "Export": {
+        "Name": "sls-nightowls-bonzai-dev-PostRoomsLambdaFunctionQualifiedArn"
+      }
+    },
+    "PutRoomLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "PutRoomLambdaVersionxIzHBwGnucp0gigYS3r9ZASmZD4sEZSH41Np060Y"
+      },
+      "Export": {
+        "Name": "sls-nightowls-bonzai-dev-PutRoomLambdaFunctionQualifiedArn"
+      }
+    },
+    "DeleteRoomLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "DeleteRoomLambdaVersionEBvVZMFRadRRRX09kj9VuJtelMCSgi80CJMCEe9w8"
+      },
+      "Export": {
+        "Name": "sls-nightowls-bonzai-dev-DeleteRoomLambdaFunctionQualifiedArn"
+      }
+    },
+    "GetBookingLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "GetBookingLambdaVersionRdEJ4WH4R6wAWSUm1HttBgnQMGmo7YSS3wnpx5KRc"
+      },
+      "Export": {
+        "Name": "sls-nightowls-bonzai-dev-GetBookingLambdaFunctionQualifiedArn"
+      }
+    },
+    "UpdateRoomLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "UpdateRoomLambdaVersionCMLrOUYnBf3gRjV1FrUCIcSyRiC4uVemRz3kAm3B0rc"
+      },
+      "Export": {
+        "Name": "sls-nightowls-bonzai-dev-UpdateRoomLambdaFunctionQualifiedArn"
+      }
+    },
+    "HttpApiId": {
+      "Description": "Id of the HTTP API",
+      "Value": {
+        "Ref": "HttpApi"
+      },
+      "Export": {
+        "Name": "sls-nightowls-bonzai-dev-HttpApiId"
+      }
+    },
+    "HttpApiUrl": {
+      "Description": "URL of the HTTP API",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "HttpApi"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            }
+          ]
+        ]
+      },
+      "Export": {
+        "Name": "sls-nightowls-bonzai-dev-HttpApiUrl"
+      }
+    }
+  }
+}

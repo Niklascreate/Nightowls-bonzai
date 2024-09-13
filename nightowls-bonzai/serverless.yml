@@ -1,0 +1,91 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: niklasnilsson
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: nightowls-bonzai
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: nightowls-bonzai
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-north-1
+  deploymentMethod: direct
+  iam:
+    role: arn:aws:iam::376129862797:role/LambdaDynamoDBuserRole
+
+functions:
+  GetRooms:
+    handler: functions/GetRooms/index.handler
+    events:
+      - httpApi:
+          path: /api/rooms
+          method: get
+
+  PostRooms:
+    handler: functions/PostRooms/index.handler
+    events:
+      - httpApi:
+          path: /api/rooms
+          method: post
+
+  PostRoom:
+    handler: functions/PostRoom/index.handler
+    events:
+      - httpApi:
+          path: /api/room
+          method: post
+    environment:
+      BOOKINGS_TABLE: 'bonzai-db-bookings'
+      
+  DeleteRoom:
+    handler: functions/DeleteRoom/index.handler
+    events:
+      - httpApi:
+          path: /api/room/{id}
+          method: delete
+    environment:
+      BOOKINGS_TABLE: 'bonzai-db-bookings'
+
+  GetBooking:   
+    handler: functions/GetBookings/index.handler  
+    events:
+      - httpApi:
+          path: /api/bookings
+          method: get
+    environment:
+      BOOKINGS_TABLE: 'bonzai-db-bookings'
+
+  UpdateRoom:   
+    handler: functions/UpdateRoom/index.handler  
+    events:
+      - httpApi:
+          path: /api/updateRoom/{id}   
+          method: put
+    environment:
+      BOOKINGS_TABLE: 'bonzai-db-bookings' 
+
+resources:
+  Resources:
+    BonzaiTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: 'bonzai-db'
+        AttributeDefinitions:
+          - AttributeName: 'id'
+            AttributeType: 'S'
+        KeySchema:
+          - AttributeName: 'id'
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    BonzaibookingTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: 'bonzai-db-bookings'
+        AttributeDefinitions:
+          - AttributeName: 'id'
+            AttributeType: 'S'
+        KeySchema:
+          - AttributeName: 'id'
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
