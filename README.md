@@ -43,7 +43,7 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/rooms
 
 ### POST
 Boka ett rum.
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room  // Ta Id:et från Get anropet när du hämtar alla rum från databasen och lägg det i bodyn ynder "roomId": "här" .
+https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room  // Ta Id:et från Get anropet när du hämtar alla rum från databasen och lägg det i bodyn under "roomId": "här" .
 ```
 [
 		{
@@ -53,13 +53,14 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room  // Ta Id:et fr
 		"checkOutDate": "2024-09-11",
 		"guestName": "Gris Nils",
 		"email": "GrisNils@ladan.se",
-		"roomId": "819b5"
+		"roomId": "här"
 		}
 ]
 ```
 
 ### GET Bookings
 Hämta alla bokningar som är gjorda från bookings-databasen(DynamoDB)
+<br>
 https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/bookings
 
 
