@@ -61,12 +61,15 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room  // Ta Id:et fr
 ### GET Bookings
 Hämta alla bokningar som är gjorda från bookings-databasen(DynamoDB)
 <br>
+<br>
 https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/bookings
 
 
 ### PUT
-För att ändra en bokning. Kör ett Get anrop mot bookings för att få fram ditt bookingNumber och använd det för att ändra bokning.
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/updateRoom/{id}
+För att ändra en bokning. Kör ett Get anrop mot Bookings för att få fram ditt bookingNumber och använd det för att ändra bokning.
+<br>
+<br>
+https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/updateRoom/{id}  //Lägg ditt bookingNumber i slutet och skicka med din ändring i bodyn.
 
 ```
 {
@@ -83,4 +86,4 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/updateRoom/{id}
 
 ### DELETE
 För att ta bort en bokning: Kör ett Get anrop mot bookings för att få fram ditt bookingNumber och använd det för att avboka.
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room/{id}
+https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room/{id}  //Lägg ditt bookingNumber i slutet och tryck send(insomnia).
