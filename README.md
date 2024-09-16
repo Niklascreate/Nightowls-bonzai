@@ -43,6 +43,8 @@ https://87sl5exyie.execute-api.eu-north-1.amazonaws.com/api/rooms
 
 ### POST
 Boka ett rum.
+<br>
+<br>
 https://87sl5exyie.execute-api.eu-north-1.amazonaws.com/api/room // Ta Id:et från Get anropet när du hämtar alla rum från databasen och lägg det i bodyn under "roomId": "här" .
 ```
 [
