@@ -7,7 +7,7 @@ Utveckling och Driftsättning i Molnmiljö
 
 ### POST
 Posta alla rum till databasen.
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/rooms
+https://87sl5exyie.execute-api.eu-north-1.amazonaws.com/api/rooms
 
 Skicka med detta i bodyn/json.
 ```
@@ -39,11 +39,11 @@ Skicka med detta i bodyn/json.
 
 ### GET
 Hämta alla rum från DynamoDB för en överblick med viktig information som till exempel roomID.
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/rooms
+https://87sl5exyie.execute-api.eu-north-1.amazonaws.com/api/rooms
 
 ### POST
 Boka ett rum.
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room  // Ta Id:et från Get anropet när du hämtar alla rum från databasen och lägg det i bodyn under "roomId": "här" .
+https://87sl5exyie.execute-api.eu-north-1.amazonaws.com/api/room // Ta Id:et från Get anropet när du hämtar alla rum från databasen och lägg det i bodyn under "roomId": "här" .
 ```
 [
 		{
@@ -62,14 +62,14 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room  // Ta Id:et fr
 Hämta alla bokningar som är gjorda från bookings-databasen(DynamoDB)
 <br>
 <br>
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/bookings
+https://87sl5exyie.execute-api.eu-north-1.amazonaws.com/api/bookings
 
 
 ### PUT
 För att ändra en bokning. Kör ett Get anrop mot Bookings för att få fram ditt bookingNumber och använd det för att ändra bokning.
 <br>
 <br>
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/updateRoom/{id}  //Lägg ditt bookingNumber i slutet och skicka med din ändring i bodyn.
+https://87sl5exyie.execute-api.eu-north-1.amazonaws.com/api/updateRoom/{id}  //Lägg ditt bookingNumber i slutet och skicka med din ändring i bodyn.
 
 ```
 {
@@ -86,4 +86,4 @@ https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/updateRoom/{id}  //L
 
 ### DELETE
 För att ta bort en bokning: Kör ett Get anrop mot bookings för att få fram ditt bookingNumber och använd det för att avboka.
-https://fji9l910ii.execute-api.eu-north-1.amazonaws.com/api/room/{id}  //Lägg ditt bookingNumber i slutet och tryck send(insomnia).
+https://87sl5exyie.execute-api.eu-north-1.amazonaws.com/api/room/{bookingNumber}  //Lägg ditt bookingNumber i slutet och tryck send(insomnia).
